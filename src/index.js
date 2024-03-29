@@ -51,9 +51,13 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-async function syncDb () {    
-    await User.sync();
-    await Presence.sync({ alter: true });
+async function syncDb () {   
+    try {
+        await User.sync();
+        await Presence.sync({ alter: true });
+    } catch (error) {
+        console.log("Error sync db : ", error);
+    }
 }
 
 syncDb();
