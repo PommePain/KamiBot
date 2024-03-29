@@ -1,5 +1,6 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const databaseSequelize = require('../db/Database');
+const { Sequelize, DataTypes }   = require('sequelize');
+const databaseSequelize          = require('../db/Database');
+const Presence                   = require('./Presence');
 
 const User = databaseSequelize.define('User', {
    id: {
@@ -45,5 +46,7 @@ const User = databaseSequelize.define('User', {
 }, {
    tableName: "users"
 });
+
+User.hasMany(Presence);
 
 module.exports = User;

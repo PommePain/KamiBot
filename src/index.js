@@ -4,6 +4,7 @@ const { TOKEN }                                             = require('../config
 const { Client, Intents, GatewayIntentBits, Collection }    = require('discord.js');
 const databaseSequelize                                     = require("./db/Database");
 const User                                                  = require('./models/User');
+const Presence                                              = require('./models/Presence');
 
 const client = new Client({
     intents: [
@@ -38,7 +39,6 @@ client.on('interactionCreate', async interaction => {
     } catch (error) {
         console.error('Impossible de se connecter à la base de données :', error);
     }
-    await User.sync();
 
     const cmd = client.commands.get(interaction.commandName);
     if (!cmd) return;
@@ -50,5 +50,12 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: "Erreur durant l'exécution de la commande", ephemeral: true });
     }
 });
+
+async function syncDb () {    
+    await User.sync();
+    await Presence.sync({ alter: true });
+}
+
+syncDb();
 
 client.login(TOKEN);
