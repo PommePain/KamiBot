@@ -11,12 +11,13 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
+        // Check if member is a staff of the server
         if (interaction.member.permissions.has("MANAGE_GUILD")) {
             var discordUser = interaction.options.getUser("username");
             const user = await User.findOne({ where: { discord_id: discordUser.id }});
 
             if (user !== null) {
-                await user.destroy();
+                await user.destroy();   // Delete the user from the database
                 await interaction.reply({ content: `J'ai bien supprimé ${user.tag}`, ephemeral: false });
             } else {
                 await interaction.reply({ content: `${discordUser.username} n'est pas inscrit`, ephemeral: false });
