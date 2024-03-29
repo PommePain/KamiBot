@@ -1,0 +1,7 @@
+{
+    "gametype": [
+        "userStats.chess_rapid",
+        "chess_blitz",
+        "chess_bullet"
+    ]
+}

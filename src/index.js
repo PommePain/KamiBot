@@ -33,13 +33,6 @@ client.events = require('fs').readdirSync('./events');
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
-    try {
-        await databaseSequelize.authenticate();
-        console.log('Connexion à la base de données réussie !');
-    } catch (error) {
-        console.error('Impossible de se connecter à la base de données :', error);
-    }
-
     const cmd = client.commands.get(interaction.commandName);
     if (!cmd) return;
 
@@ -51,12 +44,14 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-async function syncDb () {   
+async function syncDb() {   
     try {
+        await databaseSequelize.authenticate();
+        console.log('Connexion à la base de données réussie !');
         await User.sync();
         await Presence.sync({ alter: true });
-    } catch (error) {
-        console.log("Error sync db : ", error);
+    } catch (error) { 
+        console.error('Impossible de se connecter à la base de données :', error); 
     }
 }
 
